@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products-MasterPiece</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <a href="index.html"><img src="masterrr.png" width="425px"></a>
+        </div>
+        <nav>
+            <ul id="menuitems">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="product.html">Products</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <a href="cart.html"><img src="cart%20icon.png" width="40px" height="40px"></a>
+                <img src="menu%20icon.png" class="menu-icon" onclick="menutoggle()">
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!--------cart items details------->
+<div class="small-container cart-page">
+
+    <table id="cart-table">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+        <!-- Cart items will be dynamically added here -->
+    </table>
+
+    <div class="total-price">
+        <table id="total-table">
+            <tr>
+                <td>Subtotal</td>
+                <td id="subtotal">$0.00</td>                    
+            </tr>
+            <tr>
+                <td>Tax</td>
+                <td id="tax">$0.00</td>                    
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td id="total">$0.00</td>                    
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<!-------- footer -------->
+
+<div class="footer">
+    <!-- Footer content -->
+</div>
+
+<!-------- js for toggle menu -------->
+
+<script>
+// Initialize cart array
+let cart = [];
+
+// Function to add product to cart
+function addToCart(productName, price) {
+    const existingProduct = cart.find(item => item.name === productName);
+    
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        cart.push({ name: productName, price: price, quantity: 1 });
+    }
+    
+    updateCart();
+}
+
+// Function to update cart display and calculate totals
+function updateCart() {
+    const cartTable = document.getElementById('cart-table');
+    
+    // Clear previous entries
+    cartTable.innerHTML = `
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>`;
+    
+    let subtotal = 0;
+    
+    // Add each item in the cart to the table
+    cart.forEach(item => {
+        const itemSubtotal = item.price * item.quantity;
+        subtotal += itemSubtotal;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.quantity}</td>
+            <td>$${itemSubtotal.toFixed(2)}</td>`;
+        
+        cartTable.appendChild(row);
+    });
+    
+    // Update totals
+    const tax = subtotal * 0.1; // Assuming 10% tax
+    const total = subtotal + tax;
+
+    document.getElementById('subtotal').innerText = `$${subtotal.toFixed(2)}`;
+    document.getElementById('tax').innerText = `$${tax.toFixed(2)}`;
+    document.getElementById('total').innerText = `$${total.toFixed(2)}`;
+}
+
+// Function to toggle menu
+function menutoggle() {
+    var menuitems = document.getElementById("menuitems");
+    
+    if (menuitems.style.maxHeight === "0px") {
+        menuitems.style.maxHeight = "200px";
+    } else {
+        menuitems.style.maxHeight = "0px";
+    }
+}
+</script>
+
+<!-- Example products with Add to Cart buttons -->
+<div class="products">
+    <!-- Replace with dynamic product generation -->
+    <div class="product-item">
+        <img src="dodge%20hellcat.jpg" alt="">
+        <p>Dodge Hellcat - $2,000,000</p>
+        <button onclick='addToCart("Dodge Hellcat", 2000000)'>Add to Cart</button>
+    </div>
+
+    <!-- Repeat for other products -->
+</div>
+
+</body>
+</html>
